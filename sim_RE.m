@@ -1,11 +1,11 @@
 clc;clear all;close all;
 format compact
 
-seed = 2048;
+seed = 2024;
 pool = gcp(); % Get the current parallel pool
 numWorkers = pool.NumWorkers;
-filename = 'result_240917_est';
-sheetname = ['seed_' num2str(seed) 'adjusted'];
+filename = 'Result_RE0917';
+sheetname = ['seed_' num2str(seed)];
 
 % Set Parameters
 N = 20;
@@ -18,8 +18,8 @@ theta_true = [-1;0.1;0.1;1];  % Parameters for link formation
 [mA_true, H_true, zeta_true, pi_true] = compute_true_RE(beta_true, theta_true, N);
 par_true= [zeta_true; beta_true; pi_true; beta_true];
 
-B       = 100;
-Glist   = [100 200 400];
+B       = 1000;
+Glist   = [100 200 400 800 1600];
 NG      = length(Glist);
 
 par_est = zeros(16,6,NG,B);

@@ -1,10 +1,11 @@
 clc;clear all;close all;
 format compact
 
-seed = 2048;
+seed = 2024;
 pool = gcp(); % Get the current parallel pool
 numWorkers = pool.NumWorkers;
-filename = 'result_240917PT';
+filename = 'Result_PT0917';
+sheetname = ['seed_' num2str(seed)];
 
 % Set Parameters
 N = 20;
@@ -20,8 +21,8 @@ theta_true = [-1;0.1;0.1;1];  % Parameters for link formation
 [mA1_true, mA0_true, HA_true, zeta0_true, zeta1_true, xi_true, pi_true] = compute_true_PT(Dbeta_true, theta_true, N);
 par_true= [zeta1_true; xi_true; Dbeta_true; pi_true; Dbeta_true];
 
-B       = 100;
-Glist   = [100 200 400 800];
+B       = 1000;
+Glist   = [100 200 400 800 1600];
 NG      = length(Glist);
 
 par_est = zeros(20,6,NG,B);
@@ -51,12 +52,12 @@ par_true'
 [sum_par, sum_tot] = res_sum(par_est, par_true);
 mean_res = sum_par(:,:,1)
 med_res = sum_par(:,:,2);
-mse_res = sum_par(:,:,3)
+mse_res = sum_par(:,:,3);
 mae_res = sum_par(:,:,4);
 bias_res = sum_par(:,:,5);
 vari_res =sum_par(:,:,6);
-cov_res =sum_par(:,:,7)
-%%
+cov_res =sum_par(:,:,7);
+
 line_tmp = zeros(size(par_true,1)+1,1)';
 mean_tmp = [Glist', mean_res];
 mse_tmp = [Glist', mse_res];
@@ -77,10 +78,7 @@ T.Properties.VariableNames = { 'G', ...
     'beta1L', 'beta2L', 'beta3L', 'beta4L'}
 
 currentFolder = pwd;
-%disp(currentFolder);
-%disp(currentFolder)
-sheetname = ['seed_' num2str(seed) 'tmp'];
-writetable(T, [currentFolder '\' filename '.xlsx'], 'Sheet', sheetname);
+writetable(T, [currentFolder '\Results\' filename '.xlsx'], 'Sheet', sheetname);
 
 
 
