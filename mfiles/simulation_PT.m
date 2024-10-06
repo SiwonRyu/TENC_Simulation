@@ -1,0 +1,34 @@
+function [par_est, par_true, time_sec] = simulation_PT(Glist, N, B, seed, p_D, beta, theta, omega)
+% Comptue True Values
+beta0 = beta(:,1);
+beta1 = beta(:,2);
+Dbeta = beta1-[beta0(1);0;0;0];
+
+[~,~,~,~,zeta1, xi, pi] = compute_true_PT(Dbeta, theta, N);
+par_true = [zeta1; xi; Dbeta; pi; Dbeta; 1; 1];
+
+NG      = length(Glist);
+par_est = zeros(22,6,NG,B);
+
+tic(); gn = 0;
+for G = Glist; gn = gn+1;
+    parfor b = 1:B    
+    if ~isempty(seed)
+        disp(['seed = ',num2str(seed), ' G =',num2str(G),', iteration: ',num2str(b),' / ',num2str(B), ' start'])    
+        % Create a unique random stream for each worker
+        stream = RandStream('mrg32k3a','Seed',seed + b);
+        % Set random stream for the current worker
+        RandStream.setGlobalStream(stream);
+    else
+        disp(['seed = none', ' G =',num2str(G),', iteration: ',num2str(b),' / ',num2str(B), ' start'])
+    end
+    
+    [Data_ind, Data_dyad] = gen_PT(N,G,p_D,theta,omega,beta);
+    [est_zeta, est_xi, est_beta, est_pi, est_beta_X, est_beta_S] ...
+            = est_PT(Data_dyad,Data_ind, N);
+
+    par_est(:,:,gn,b) = [est_zeta; est_xi; est_beta; est_pi; est_beta_X; est_beta_S];
+    end
+end; 
+clc; time_sec = toc()
+end
