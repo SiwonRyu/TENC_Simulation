@@ -15,8 +15,8 @@ DZb1    = b(3).*Dq + b(4).*Dr;
 DZb0    = b(4).*Ds;
 
 % The ordering of Dq, Dr and X need to be the same    
-IF_adj1  =  -(R\[( X'*DZb1 )/G]*IF_zeta1' )';
-IF_adj0  =  -(R\[( X'*DZb0 )/G]*IF_zeta0' )';
+IF_adj1  =  -(R\[( X'*DZb1 )/G]*IF_zeta1'/G )';
+IF_adj0  =  -(R\[( X'*DZb0 )/G]*IF_zeta0'/G )';
 IF_beta = IF + IF_adj1 - IF_adj0;
 
 Avar    = q*IF_beta'*IF_beta/(G-1);

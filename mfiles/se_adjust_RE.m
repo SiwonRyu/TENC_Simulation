@@ -14,7 +14,7 @@ R       = (X'*X)/G;
 DXb = b(3).*Dq + b(4).*Dr;
 % The ordering of Dq, Dr and X need to be the same    
 
-IF_adj  =  -(R\[( X'*DXb )/G]*IF_zeta' )';
+IF_adj  =  -(R\[( X'*DXb )/G]*IF_zeta'/G )';
 IF_beta = IF + IF_adj;
 
 Avar    = q*IF_beta'*IF_beta/(G-1);

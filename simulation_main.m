@@ -2,7 +2,7 @@ clc;clear all;close all;
 format compact
 
 seed    = 2024;
-filenm  = 'Result_1005';
+filenm  = 'Result_1007_B10k_N10';
 addpath('mfiles');
 
 % Set paramteres for Design1
@@ -18,9 +18,8 @@ theta_P = [-1;0.1;0.1;1];  % Parameters for link formation
 omega_P = [-1.5; 0.3; 0.3;-1];
 
 Glist   = [100 200 400 800 1600];
-Glist   = [100 200];
-[par_est_R, par_true_R, time_sec_R] = simulation_RE(Glist,20,100,seed,p_D,beta_R,theta_R);
-[par_est_P, par_true_P, time_sec_P] = simulation_PT(Glist,20,100,seed,p_D,beta_P,theta_P,omega_P);
+[par_est_R, par_true_R, time_sec_R] = simulation_RE(Glist,10,10000,seed,p_D,beta_R,theta_R);
+[par_est_P, par_true_P, time_sec_P] = simulation_PT(Glist,10,10000,seed,p_D,beta_P,theta_P,omega_P);
 
 
 % From Design 1
